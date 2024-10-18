@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\base",
+    "\\base\\commons",
+    "\\base\\fixtures",
+    "\\pageObjects",
+    "\\tests",
+    "\\utils"
+  ],
+  "PreviewInSolutionExplorer": false
+}
