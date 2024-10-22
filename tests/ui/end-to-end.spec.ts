@@ -1,6 +1,8 @@
 import { test, expect } from '../../config/FixtureConfig';
+import { ReportingApi } from '@reportportal/agent-js-playwright'
 import { PaymentPage } from '../../pageObjects/PaymentPage';
 import { OrderPlacedPage } from '../../pageObjects/OrderPlacedPage';
+
 
 test.describe('Purchase Men T-Shirt', () => {
 
@@ -12,9 +14,8 @@ test.describe('Purchase Men T-Shirt', () => {
 
         await expect(await page.url()).toContain(await logInPage.getPageUrl());
 
-        await logInPage.Login('username', 'password');
+        await logInPage.Login(process.env.USER_NAME, process.env.PASSWORD);
         
-       
         // Products
         await homePage.NavigateTo('Products');
         await productsPage.clickCatagoryWithItem('Men', 'TShirts');
@@ -49,6 +50,4 @@ test.describe('Purchase Men T-Shirt', () => {
         await orderPlacePage.ClickContinueButton();
 
     });
-
-
 })
