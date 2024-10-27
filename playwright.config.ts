@@ -1,7 +1,14 @@
 import { PlaywrightTestConfig, devices   } from '@playwright/test';
 import dotenv from 'dotenv';
+import baseUrl from './utils/baseUrl';
 
 dotenv.config({ path:  '.env' });
+
+interface TestConfig extends PlaywrightTestConfig {
+  authApiUrl: string;
+  baseApiUrl: string;
+  testDataDir: string;
+};
 
 const RPConfig = {
   apiKey: process.env.REPORTPORTAL_API_KEY,
@@ -22,7 +29,7 @@ const RPConfig = {
   description: 'Playwright with Typescript - End-to-End Test',
 }; 
 
-const config: PlaywrightTestConfig = {
+const defaultConfig: PlaywrightTestConfig = {
   timeout: 2 * 60 * 1000,
       expect: {
         timeout: 20000,
@@ -37,6 +44,11 @@ const config: PlaywrightTestConfig = {
   //  workers: 5,
 
   use: {
+    baseURL: process.env.ENV === 'qa'? baseUrl.qa.home
+      : process.env.ENV === 'staging'? baseUrl.staging.home
+      : process.env.ENV === 'production'? baseUrl.production.home
+      : baseUrl.qa.home,
+  
     headless: false,
     screenshot: {
       mode: 'only-on-failure',
@@ -47,10 +59,13 @@ const config: PlaywrightTestConfig = {
     navigationTimeout: 40000,
     trace: 'retain-on-failure',
   },
-  reporter: [['@reportportal/agent-js-playwright', RPConfig]],
-  
-  testDir: './tests/ui',
 
+  // Report Portal
+  // reporter: [['@reportportal/agent-js-playwright', RPConfig]],
+  reporter: [['html', { outputFolder: 'reports'}]],
+  
+  testDir: './tests/ui/',
+  outputDir: 'test-results',
     /* Configure projects for major browsers */
     projects: [
       {
@@ -60,5 +75,5 @@ const config: PlaywrightTestConfig = {
     ],
 };
 
-export default config;
+export default defaultConfig;
   

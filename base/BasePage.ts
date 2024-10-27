@@ -1,12 +1,15 @@
 import { Page } from '@playwright/test';
 import { promises } from 'dns';
+import dotenv from 'dotenv';
 
 export default abstract class BasePage {
 
-    protected readonly BASE_URL = 'https://www.automationexercise.com/';
+    //protected readonly BASE_URL = ({baseURL}, use);
     protected readonly PAGE_NAME: string;
     protected readonly PAGE_URL: string;
     protected readonly page: Page;
+
+    BASE_URL: string = '/';
 
     constructor( page: Page, pageName: string, pageUrl = '') {
         this.page = page;
